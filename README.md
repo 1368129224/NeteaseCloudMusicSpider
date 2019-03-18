@@ -1,5 +1,7 @@
 # NeteaseCloudMusicSpider
 
+![](https://cdn.rawgit.com/LunaGao/BlessYourCodeTag/master/tags/god.svg)
+
 网易云音乐爬虫
 
 使用[NeteaseCloudMusicApi](https://github.com/Binaryify/NeteaseCloudMusicApi)+requests原生爬虫，数据存入mysql。
@@ -20,7 +22,7 @@
 
 目前获得的数据
 
-
+![数据](https://github.com/1368129224/NeteaseCloudMusicSpider/blob/master/picture/1552876455910.png?raw=true)
 
 共有159万条
 
