@@ -1,31 +1,35 @@
-import random
-import os
-import subprocess
 import time
-from concurrent.futures import ThreadPoolExecutor, wait, ALL_COMPLETED, as_completed
+from concurrent.futures import ThreadPoolExecutor, wait, ALL_COMPLETED, as_completed, FIRST_EXCEPTION
 
-def run(i,j):
+
+class MyException(Exception):
+    def __init__(self, *args):
+        self.args = args
+
+def run(i):
     global total
-    print("start work at " + time.strftime("%H:%M:%S %Y", time.localtime()))
-    time.sleep(i)
-    print("work done at " + time.strftime("%H:%M:%S %Y", time.localtime()))
-    total += 1
-    return total
+    if i != 5 and i != 6:
+        print("doing work {} start at ".format(i) + time.strftime("%H:%M:%S %Y", time.localtime()))
+        time.sleep(i)
+        print("work {} done at ".format(i) + time.strftime("%H:%M:%S %Y", time.localtime()))
+        total += 1
+        return total
+    else:
+        raise MyException('ip error')
 
 total = 0
 starttime = time.perf_counter()
 
-times = [4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4]
-with ThreadPoolExecutor() as executor:
-    a = 123
-    all_task = [executor.submit(run,i,a) for i in times]
-    for task in as_completed(all_task):
-        print(task.result())
-
-wait(all_task, return_when=ALL_COMPLETED)
-
-# for i in times:
-#     run(i)
+all_task = [1,2,3,4,5,6,7,8,9,10,11,12]
+with ThreadPoolExecutor(10) as executor:
+    undo_task = [executor.submit(run,i) for i in all_task]
+    completed, uncompleted = wait(undo_task, return_when=FIRST_EXCEPTION)
+    for item in completed:
+        print(item)
+    print('undo:')
+    for item in uncompleted:
+        print(item)
+        item.cancel()
 
 elapsed = (time.perf_counter() - starttime)
 print("done!time: {} ".format(elapsed))

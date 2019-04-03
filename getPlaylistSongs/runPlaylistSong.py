@@ -6,13 +6,12 @@ from fake_useragent import UserAgent
 from Helper import SqlHelper,ApiHelper
 
 
-def getSongsJson(pid):
+def getSongsJson(pid,api):
     '''
     传入歌单ID，爬取歌单中歌曲并存入数据库
     :param pid: 歌单ID
     :return: 歌单ID
     '''
-    global api
     ua = UserAgent()
     start_time = time.time()
     headers = {
@@ -27,7 +26,7 @@ def getSongsJson(pid):
         except Exception as e:
             print('pid: {} connetct mysql error: {}'.format(pid, e))
     songResult = []
-    url = r'http://localhost:3000/playlist/detail?id='
+    url = r'http://localhost:{}/playlist/detail?id='.format(api.port)
     url = url + repr(pid)
     req = requests.get(url, headers=headers)
     json = req.json()
@@ -48,9 +47,8 @@ def getSongsJson(pid):
             return pid
         elif json["code"] == -460:
             print('更换IP!')
-            ApiHelper.stopApi(api)
-            ApiHelper.changeIP()
-            api = ApiHelper.startApi()
+            api.stopApi()
+            api.startApi()
             getSongsJson(pid)
         else:
             print(json)
@@ -107,6 +105,8 @@ def runPlaylistSong():
     获取待爬取的歌单后提交进线程池
     :return: None
     '''
+    api = ApiHelper.api()
     pid = getPid()
     with ThreadPoolExecutor(96) as executor:
-        executor.map(getSongsJson, pid)
+        executor.map(getSongsJson, (pid,api))
+    api.stopApi()
