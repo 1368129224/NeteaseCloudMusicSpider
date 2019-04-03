@@ -1,10 +1,9 @@
 import requests
 import pymysql
 import time
-import random
-import subprocess
 from concurrent.futures import ThreadPoolExecutor
 from fake_useragent import UserAgent
+from Helper import SqlHelper,ApiHelper
 
 
 def getSongsJson(pid):
@@ -13,17 +12,18 @@ def getSongsJson(pid):
     :param pid: 歌单ID
     :return: 歌单ID
     '''
-    global ua, api, sqlconn
+    global api
+    ua = UserAgent()
     start_time = time.time()
     headers = {
         'User-Agent': ua.random
     }
     try:
-        db = pymysql.connect(**sqlconn)
+        db = pymysql.connect(**SqlHelper.getSql())
     except Exception as e:
         print('pid: {} connetct mysql error: {}'.format(pid,e))
         try:
-            db = pymysql.connect(**sqlconn)
+            db = pymysql.connect(**SqlHelper.getSql())
         except Exception as e:
             print('pid: {} connetct mysql error: {}'.format(pid, e))
     songResult = []
@@ -48,9 +48,9 @@ def getSongsJson(pid):
             return pid
         elif json["code"] == -460:
             print('更换IP!')
-            stopApi(api)
-            changeIP()
-            api = startApi()
+            ApiHelper.stopApi(api)
+            ApiHelper.changeIP()
+            api = ApiHelper.startApi()
             getSongsJson(pid)
         else:
             print(json)
@@ -87,9 +87,8 @@ def getPid():
     从数据库获取待爬取的歌单ID
     :return: 歌单ID
     '''
-    global sqlconn
     try:
-        db = pymysql.connect(**sqlconn)
+        db = pymysql.connect(**SqlHelper.getSql())
         cursor = db.cursor()
         sql = 'SELECT PID FROM T_Playlist WHERE PID IN (SELECT t.PID FROM(SELECT PID FROM T_Playlist ORDER BY SUBSCRIBEDCOUNT DESC LIMIT 0, 500)AS t) ORDER BY T_Playlist.TRACKCOUNT DESC'
         cursor.execute(sql)

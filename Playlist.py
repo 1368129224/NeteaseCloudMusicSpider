@@ -19,14 +19,14 @@ def getSongsJson(pid):
     headers = {
         'User-Agent': ua.random
     }
-    try:
-        db = pymysql.connect(**getSql())
-    except Exception as e:
-        print('pid: {} connetct mysql error: {}'.format(pid,e))
+    retry = 3
+    while retry > 0:
         try:
             db = pymysql.connect(**getSql())
+            break
         except Exception as e:
-            print('pid: {} connetct mysql error: {}'.format(pid, e))
+            print('pid: {} connetct mysql error: {}'.format(pid,e))
+            retry -= 1
     songResult = []
     url = r'http://localhost:3000/playlist/detail?id='
     url = url + repr(pid)
@@ -122,7 +122,8 @@ def runPlaylistInfo():
 
 
 def getPlaylistJson(offset):
-    global ua, api
+    global api
+    ua = UserAgent()
     headers = {
         'User-Agent': ua.random
     }
