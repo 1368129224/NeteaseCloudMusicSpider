@@ -18,11 +18,11 @@ def getSongsJson(pid,api):
         'User-Agent': ua.random
     }
     try:
-        db = pymysql.connect(**SqlHelper.getSql())
+        db = pymysql.connect(**SqlHelper.getSqlTx())
     except Exception as e:
         print('pid: {} connetct mysql error: {}'.format(pid,e))
         try:
-            db = pymysql.connect(**SqlHelper.getSql())
+            db = pymysql.connect(**SqlHelper.getSqlTx())
         except Exception as e:
             print('pid: {} connetct mysql error: {}'.format(pid, e))
     songResult = []
@@ -86,7 +86,7 @@ def getPid():
     :return: 歌单ID
     '''
     try:
-        db = pymysql.connect(**SqlHelper.getSql())
+        db = pymysql.connect(**SqlHelper.getSqlTx())
         cursor = db.cursor()
         sql = 'SELECT PID FROM T_Playlist WHERE PID IN (SELECT t.PID FROM(SELECT PID FROM T_Playlist ORDER BY SUBSCRIBEDCOUNT DESC LIMIT 0, 500)AS t) ORDER BY T_Playlist.TRACKCOUNT DESC'
         cursor.execute(sql)
@@ -105,8 +105,17 @@ def runPlaylistSong():
     获取待爬取的歌单后提交进线程池
     :return: None
     '''
-    api = ApiHelper.api()
+    p = ApiHelper.api()
+    p.startApi()
     pid = getPid()
+    api = [p for i in range(len(pid))]
     with ThreadPoolExecutor(96) as executor:
-        executor.map(getSongsJson, (pid,api))
-    api.stopApi()
+        executor.map(getSongsJson,pid,api)
+    print('抓取完成')
+    p.stopApi()
+
+
+if __name__ == '__main__':
+    start_time = time.perf_counter()
+    runPlaylistSong()
+    print('last time: {}'.format(time.perf_counter() - start_time))

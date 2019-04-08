@@ -1,5 +1,7 @@
 import random
 import subprocess
+import time
+import signal
 
 
 class api():
@@ -21,15 +23,15 @@ class api():
 
     def startApi(self):
         self.__changeIP()
-        self.api = subprocess.Popen(
+        self.__api = subprocess.Popen(
             'set PORT={} && node app.js'.format(self.port),
             cwd=r"G:\163music",
             stdout=None,
             stderr=None,
             shell=True
         )
-        print('pid: {} api started port: {}'.format(self.api.pid, self.port))
+        print('pid: {} api started port: {}'.format(self.__api.pid, self.port))
 
     def stopApi(self):
-        self.api.terminate()
-        print('pid: {} api stopped'.format(self.api.pid))
+        self.__api.send_signal(signal.CTRL_C_EVENT)
+        # self.__api.terminate()

@@ -6,30 +6,25 @@ class MyException(Exception):
     def __init__(self, *args):
         self.args = args
 
-def run(i):
+def run(i,j):
     global total
-    if i != 5 and i != 6:
-        print("doing work {} start at ".format(i) + time.strftime("%H:%M:%S %Y", time.localtime()))
-        time.sleep(i)
-        print("work {} done at ".format(i) + time.strftime("%H:%M:%S %Y", time.localtime()))
-        total += 1
-        return total
-    else:
-        raise MyException('ip error')
+    print("doing work {} start at ".format(i) + time.strftime("%H:%M:%S %Y", time.localtime()))
+    time.sleep(i)
+    print("{} work {} done at ".format(j, i) + time.strftime("%H:%M:%S %Y", time.localtime()))
+    total += 1
+    return total
+
+def generateJ(i):
+    for j in range(len(i)):
+        yield 123
 
 total = 0
 starttime = time.perf_counter()
 
 all_task = [1,2,3,4,5,6,7,8,9,10,11,12]
+j = [123 for i in range(len(all_task))]
 with ThreadPoolExecutor(10) as executor:
-    undo_task = [executor.submit(run,i) for i in all_task]
-    completed, uncompleted = wait(undo_task, return_when=FIRST_EXCEPTION)
-    for item in completed:
-        print(item)
-    print('undo:')
-    for item in uncompleted:
-        print(item)
-        item.cancel()
+    executor.map(run,all_task,j)
 
 elapsed = (time.perf_counter() - starttime)
 print("done!time: {} ".format(elapsed))

@@ -5,6 +5,7 @@ def getSqlHome():
         for line in lines:
             sql[line.split('=')[0]] = line.split('=')[1].replace('\n','')
     sql['port'] = int(sql['port'])
+    sql['connect_timeout'] = int(sql['connect_timeout'])
     return sql
 
 def getSqlTx():
@@ -14,4 +15,5 @@ def getSqlTx():
         for line in lines:
             sql[line.split('=')[0]] = line.split('=')[1].replace('\n','')
     sql['port'] = int(sql['port'])
+    sql['connect_timeout'] = int(sql['connect_timeout'])
     return sql

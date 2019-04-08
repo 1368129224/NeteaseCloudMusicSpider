@@ -116,7 +116,7 @@ def runPlaylistSong():
 
 ###获取指定分类的歌单
 def runPlaylistInfo():
-    offset = [num for num in range(0, 1310, 10)]
+    offset = [num for num in range(0, 1300, 10)]
     with ThreadPoolExecutor(32) as executor:
         executor.map(getPlaylistJson, offset)
 
@@ -247,8 +247,8 @@ if __name__ == '__main__':
     api = startApi()
 
     try:
-        # runPlaylistInfo()
-        runPlaylistSong()
+        runPlaylistInfo()
+        # runPlaylistSong()
     finally:
         stopApi(api)
 
