@@ -20,11 +20,11 @@ def getPlaylistJson(offset,api):
     try:
         db = pymysql.connect(**SqlHelper.getSqlTx())
     except Exception as e:
-        print('offset: {} connetct mysql error: {}'.format(offset, e))
+        print('offset: {} connect mysql error: {}'.format(offset, e))
         try:
             db = pymysql.connect(**SqlHelper.getSqlTx())
         except Exception as e:
-            print('offset: {} connetct mysql error: {}'.format(offset, e))
+            print('offset: {} connect mysql error: {}'.format(offset, e))
     url = r'http://localhost:3000/top/playlist?limit=10&order=hot&cat=%E5%8D%8E%E8%AF%AD&offset='
     url = url + repr(offset)
     playlistResult = []
@@ -60,10 +60,10 @@ def getPlaylistJson(offset,api):
             print('更换IP!')
             api.stopApi()
             api.startApi()
-            getPlaylistJson(offset)
+            getPlaylistJson(offset,api)
         else:
             print(json)
-            getPlaylistJson(offset)
+            getPlaylistJson(offset,api)
     except Exception as e:
         print('getPlaylistJson error offset {} e {}'.format(offset,e))
     finally:

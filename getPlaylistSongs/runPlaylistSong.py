@@ -21,11 +21,11 @@ def getSongsJson(pid, api):
     try:
         db = pymysql.connect(**SqlHelper.getSqlTx())
     except Exception as e:
-        print('pid: {} connetct mysql error: {}'.format(pid, e))
+        print('pid: {} connect mysql error: {}'.format(pid, e))
         try:
             db = pymysql.connect(**SqlHelper.getSqlTx())
         except Exception as e:
-            print('pid: {} connetct mysql error: {}'.format(pid, e))
+            print('pid: {} connect mysql error: {}'.format(pid, e))
     songResult = []
     url = r'http://localhost:3000/playlist/detail?id='
     url = url + repr(pid)
@@ -55,10 +55,10 @@ def getSongsJson(pid, api):
             print('更换IP!')
             api.stopApi()
             api.startApi()
-            getSongsJson(pid)
+            getSongsJson(pid,api)
         else:
             print(json)
-            getSongsJson(pid)
+            getSongsJson(pid,api)
     except Exception as e:
         print('main error pid {} e {}'.format(pid, e))
     finally:
