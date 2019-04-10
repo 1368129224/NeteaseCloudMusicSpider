@@ -5,9 +5,6 @@ import signal
 
 
 class api():
-    def __init__(self):
-        self.port = random.randint(3001, 4000)
-
     def __changeIP(self):
         try:
             with open(r"G:\163music\util\request.js", "r+", encoding="utf8") as f:
@@ -24,14 +21,19 @@ class api():
     def startApi(self):
         self.__changeIP()
         self.__api = subprocess.Popen(
-            'set PORT={} && node app.js'.format(self.port),
+            'node app.js',
             cwd=r"G:\163music",
             stdout=None,
-            stderr=None,
-            shell=True
+            stderr=None
         )
-        print('pid: {} api started port: {}'.format(self.__api.pid, self.port))
+        print('pid: {} api started'.format(self.__api.pid))
 
     def stopApi(self):
-        self.__api.send_signal(signal.CTRL_C_EVENT)
-        # self.__api.terminate()
+        self.__api.terminate()
+
+if __name__ == '__main__':
+    # test
+    api = api()
+    api.startApi()
+    time.sleep(10)
+    api.stopApi()
