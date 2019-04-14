@@ -578,7 +578,7 @@
       "chnname": "歌单",
       "entities": [
         {
-          "title": "T_Playlist",
+          "title": "T_Huayu",
           "fields": [
             {
               "name": "PID",
@@ -674,11 +674,11 @@
               "relationNoShow": true
             }
           ],
-          "chnname": "推荐歌单表",
+          "chnname": "华语歌单表",
           "remark": ""
         },
         {
-          "title": "T_Song",
+          "title": "T_HuayuSong",
           "fields": [
             {
               "name": "PID",
@@ -744,7 +744,7 @@
               "relationNoShow": true
             }
           ],
-          "chnname": "歌单歌曲表"
+          "chnname": "华语歌单歌曲表"
         },
         {
           "title": "T_Tag",
@@ -875,7 +875,7 @@
         "nodes": [
           {
             "shape": "table",
-            "title": "T_Playlist",
+            "title": "T_Huayu",
             "moduleName": false,
             "x": 370,
             "y": 130,
@@ -883,7 +883,7 @@
           },
           {
             "shape": "table",
-            "title": "T_Song",
+            "title": "T_HuayuSong",
             "moduleName": false,
             "x": 690,
             "y": 110,
@@ -974,18 +974,18 @@
             "field": "PID"
           },
           "to": {
-            "entity": "T_Playlist",
+            "entity": "T_Huayu",
             "field": "PID"
           }
         },
         {
           "relation": "0,n:1",
           "from": {
-            "entity": "T_Song",
+            "entity": "T_HuayuSong",
             "field": "PID"
           },
           "to": {
-            "entity": "T_Playlist",
+            "entity": "T_Huayu",
             "field": "PID"
           }
         },
@@ -996,7 +996,7 @@
             "field": "SID"
           },
           "to": {
-            "entity": "T_Song",
+            "entity": "T_HuayuSong",
             "field": "SID"
           }
         }
