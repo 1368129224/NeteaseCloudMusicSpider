@@ -33,7 +33,7 @@ charset=utf8mb4
 connect_timeout=180
 ```
 2. 修改```Helper.SqlHelper.py```中的文件名为**mysql.txt**
-3. 在数据库中创建```163music```database
+3. 在MySQL中创建```163music```database
 4. enjoy!
 
 ---
@@ -73,3 +73,4 @@ TODO:
 
 - [ ] 学习数据库知识
 - [ ] 学习python面向对象相关知识
+
