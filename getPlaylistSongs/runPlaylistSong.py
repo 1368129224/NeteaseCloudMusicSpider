@@ -6,7 +6,7 @@ from fake_useragent import UserAgent
 from Helper import SqlHelper, ApiHelper
 
 
-def getSongsJson(pid, api):
+def getSongsJson(pid, api, cat):
     '''
     传入歌单ID，爬取歌单中歌曲并存入数据库
     :param api: api
@@ -41,7 +41,7 @@ def getSongsJson(pid, api):
                     'null'
                 )
                 songResult.append(song)
-            saveSongData(songResult, db)
+            saveSongData(songResult, db, cat)
             # with open('songlog.txt', 'a') as f:
             #     f.write('PID: {} , {} 首,用时 {}\n'.format(pid, json['playlist']['trackCount'], time.time() - start_time))
             print(
@@ -55,17 +55,17 @@ def getSongsJson(pid, api):
             print('更换IP!')
             api.stopApi()
             api.startApi()
-            getSongsJson(pid,api)
+            getSongsJson(pid,api,cat)
         else:
             print(json)
-            getSongsJson(pid,api)
+            getSongsJson(pid,api,cat)
     except Exception as e:
         print('main error pid {} e {}'.format(pid, e))
     finally:
         db.close()
 
 
-def saveSongData(data, db):
+def saveSongData(data, db, cat):
     '''
     储存歌曲数据到数据库中
     :param data: [歌单ID,歌曲ID,歌曲名]
@@ -74,7 +74,7 @@ def saveSongData(data, db):
     '''
     try:
         cursor = db.cursor()
-        sql = "INSERT INTO T_Song VALUES (%s, %s, %s)"
+        sql = "INSERT INTO T_{}Song VALUES (%s, %s, %s)".format(ApiHelper.catlist[cat])
         for row in data:
             try:
                 cursor.execute(sql, row)
@@ -86,7 +86,7 @@ def saveSongData(data, db):
         print('saveSogData error {}'.format(e))
 
 
-def getPid():
+def getPid(cat):
     '''
     从数据库获取待爬取的歌单ID
     :return: 歌单ID
@@ -101,7 +101,7 @@ def getPid():
             except Exception as e:
                 print('getPid connetct mysql error: {}'.format(e))
         cursor = db.cursor()
-        sql = 'SELECT PID FROM T_Playlist WHERE PID IN (SELECT t.PID FROM(SELECT PID FROM T_Playlist ORDER BY SUBSCRIBEDCOUNT DESC LIMIT 0, 500)AS t) ORDER BY T_Playlist.TRACKCOUNT DESC'
+        sql = 'SELECT PID FROM T_{} WHERE PID IN (SELECT t.PID FROM(SELECT PID FROM T_{} ORDER BY SUBSCRIBEDCOUNT DESC LIMIT 0, 500)AS t) ORDER BY T_{}.TRACKCOUNT DESC'.format(ApiHelper.catlist[cat],ApiHelper.catlist[cat],ApiHelper.catlist[cat])
         cursor.execute(sql)
         result = cursor.fetchall()
         pid = []
@@ -124,6 +124,18 @@ def runPlaylistSong():
     api = [p for i in range(len(pid))]
     with ThreadPoolExecutor(96) as executor:
         result = executor.map(getSongsJson, pid, api)
+    print('已抓取{}个歌单,共计{}首歌.'.format(len(pid), sum(result)))
+    p.stopApi()
+
+
+def run(cat):
+    p = ApiHelper.api()
+    p.startApi()
+    pid = getPid(cat)
+    api = [p for i in range(len(pid))]
+    c = [cat for i in range(len(pid))]
+    with ThreadPoolExecutor(96) as executor:
+        result = executor.map(getSongsJson, pid, api, c)
     print('已抓取{}个歌单,共计{}首歌.'.format(len(pid), sum(result)))
     p.stopApi()
 

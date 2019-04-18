@@ -1,15 +1,14 @@
-import time
-
+import pymysql
+from Helper import SqlHelper,ApiHelper
 
 
 def main():
-    print('init')
+    for item in ApiHelper.catlist:
+        print(item)
+    iput = input()
+    if iput in ApiHelper.catlist:
+        print('y')
 
-    print('fetch data')
-
-    print('anlayse data')
 
 if __name__ == '__main__':
-    while True:
-        main()
-        time.sleep(5)
+    main()

@@ -4,7 +4,7 @@ from concurrent.futures import ThreadPoolExecutor
 from Helper import SqlHelper,ApiHelper
 from fake_useragent import UserAgent
 
-def getSongIds():
+def getSongIds(cat):
     try:
         try:
             db = pymysql.connect(**SqlHelper.getSqlTx())
@@ -15,7 +15,7 @@ def getSongIds():
             except Exception as e:
                 print('getSid connetct mysql error: {}'.format(e))
         cursor = db.cursor()
-        sql = 'SELECT DISTINCT SID FROM T_Song'
+        sql = 'SELECT DISTINCT SID FROM T_{}Song'.format(ApiHelper.catlist[cat])
         cursor.execute(sql)
         result = cursor.fetchall()
         sids = []
@@ -102,10 +102,10 @@ def saveData(data,db):
 
 
 
-def run():
+def run(cat):
     p = ApiHelper.api()
     p.startApi()
-    ids = getSongIds()
+    ids = getSongIds(cat)
     urls = getUrls(ids)
     apis = [p for i in range(len(urls))]
     with ThreadPoolExecutor(64) as executor:

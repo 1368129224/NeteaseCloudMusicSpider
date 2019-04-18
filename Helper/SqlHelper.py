@@ -10,7 +10,7 @@ def getSqlHome():
 
 def getSqlTx():
     sql = {}
-    with open('../mysql.tx', 'r') as f:
+    with open('mysql.tx', 'r') as f:
         lines = f.readlines()
         for line in lines:
             sql[line.split('=')[0]] = line.split('=')[1].replace('\n','')
