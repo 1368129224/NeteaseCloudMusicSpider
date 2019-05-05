@@ -2,6 +2,7 @@ import pymongo
 import plotly
 import plotly.graph_objs as go
 import sys
+from functools import reduce
 
 
 client = pymongo.MongoClient('localhost',27017)
@@ -32,3 +33,4 @@ plotly.offline.plot(fig, auto_open = True)
 #     "layout": go.Layout(title="hello world")
 # }, auto_open=True)
 
+reduce()
