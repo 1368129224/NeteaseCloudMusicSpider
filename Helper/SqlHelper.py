@@ -17,3 +17,6 @@ def getSqlTx():
     sql['port'] = int(sql['port'])
     sql['connect_timeout'] = int(sql['connect_timeout'])
     return sql
+
+def getMongoTX():
+    return 'mongodb://zooter:zzc()1214@www.zooter.com.cn:27017/admin'

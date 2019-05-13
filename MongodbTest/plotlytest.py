@@ -1,7 +1,9 @@
 import pymongo
 import openpyxl
+from Helper import SqlHelper
 
-connstr = 'mongodb://zooter:zzc()1214@www.zooter.com.cn:27017/admin'
+# connstr = 'mongodb://zooter:zzc()1214@www.zooter.com.cn:27017/admin'
+connstr = SqlHelper.getMongoTX()
 client = pymongo.MongoClient(connstr)
 db = client['163music']
 cl = db['userinfos']
