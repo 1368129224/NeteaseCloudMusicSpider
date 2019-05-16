@@ -11,7 +11,7 @@ class api():
     def __changeIP(self):
         try:
             with open(r"G:\163music\util\request.js", "r+", encoding="utf8") as f:
-                f.seek(2782)
+                f.seek(2779)
                 random.seed(a=None)
                 ip = repr(random.randint(100, 255)) + '.' + \
                      repr(random.randint(100, 255))

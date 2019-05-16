@@ -6,6 +6,18 @@
 
 使用[NeteaseCloudMusicApi](https://github.com/Binaryify/NeteaseCloudMusicApi)+requests原生爬虫，数据存入mysql。
 
+---
+
+**项目即将重置**
+
+**项目即将重置**
+
+**项目即将重置**
+
+---
+
+
+
 目前问题：
 
 - [x] 未找到效率高的高匿代理池

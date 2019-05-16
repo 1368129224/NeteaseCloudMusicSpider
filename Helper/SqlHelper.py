@@ -1,4 +1,4 @@
-def getSqlHome():
+def getMySqlHome():
     sql = {}
     with open('mysql.home', 'r') as f:
         lines = f.readlines()
@@ -8,7 +8,7 @@ def getSqlHome():
     sql['connect_timeout'] = int(sql['connect_timeout'])
     return sql
 
-def getSqlTx():
+def getMySqlTx():
     sql = {}
     with open('mysql.tx', 'r') as f:
         lines = f.readlines()
@@ -18,5 +18,6 @@ def getSqlTx():
     sql['connect_timeout'] = int(sql['connect_timeout'])
     return sql
 
-def getMongoTX():
-    return 'mongodb://zooter:zzc()1214@www.zooter.com.cn:27017/admin'
+def getMongoTx():
+    with open('mongodb.tx', 'r') as f:
+        return f.readline()
