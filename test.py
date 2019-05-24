@@ -3,6 +3,7 @@ import pymongo
 import jieba
 import collections
 
+
 def save_comments():
     client = pymongo.MongoClient(getMongoTx())
     db = client['163music']
