@@ -1,6 +1,5 @@
 from Helper.SqlHelper import getMongoTx
 import pymongo
-import pkuseg
 
 
 # client = pymongo.MongoClient(getMongoTx())
@@ -14,4 +13,4 @@ import pkuseg
 #         comments.append(item['content'])
 #         f.write(item['content'])
 if __name__ == '__main__':
-    pkuseg.test('test.txt', 'output.txt', nthread=8)
+    pkuseg.test('input.txt', 'output.txt')
