@@ -1,8 +1,10 @@
 import requests
 import time
+import pymysql
 from bs4 import BeautifulSoup
 from Spiders import mysql
 from Helper.ApiHelper import api
+from Helper.SqlHelper import getMySqlTx
 from Helper import models
 
 
@@ -40,11 +42,12 @@ if __name__ == '__main__':
         name = input('请输入歌手名：').strip()
     start_time = time.time()
     try:
+        db = pymysql.connect(**getMySqlTx())
         artist_info = mysql.get_artist_id(name, Api)
         print(artist_info)
-    #     songs = mysql.get_songs(artist_info, Api)
-    #     for song_info in songs:
-    #         mysql.get_comments_multi_thread(song_info, Api)
+        songs = mysql.get_songs(artist_info, Api)
+        for song_info in songs:
+            mysql.get_comments_multi_thread(song_info, Api, db)
     finally:
         Api.stopApi()
     # print(artist_info)

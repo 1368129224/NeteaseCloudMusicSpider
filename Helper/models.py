@@ -46,4 +46,30 @@ def create_comments_table(sid, db):
     :param db: 数据库链接
     :return:
     '''
-    pass
+    cursor = db.cursor()
+    cursor.execute("CREATE TABLE {}_Comments( \
+                        cid INT NOT NULL   COMMENT 'cid 评论ID' , \
+                        sid INT    COMMENT 'sid 歌曲ID' , \
+                        likedCount INT    COMMENT 'likedCount 点赞数' , \
+                        uid INT    COMMENT 'uid 评论者ID' , \
+                        uname INT    COMMENT 'uname 评论者昵称' , \
+                        content VARCHAR(1024)    COMMENT 'content 评论内容' , \
+                        PRIMARY KEY (cid) \
+                    ) COMMENT = '评论表 ';;".format(sid))
+
+def select_fans_id(aid, db):
+    '''
+    从数据库中查询hotsong的评论者，返回包含50个评论者ID的SSCursor的list
+    :param aid: 歌手ID
+    :param db: 数据库链接
+    :return:
+    '''
+    cursors = []
+    cursor = db.cursor()
+    cursor.execute("SELECT T_HotSongs.id FROM T_HotSongs WHERE T_HotSongs.id = {} ORDER BY T_HotSongs.rating".format(aid))
+    sids = cursor.fetchall()
+    for sid in sids:
+        cursor = db.cursor(pymysql.cursors.SSCursor)
+        cursor.execute("SELECT DISTINCT {}_Comments.uid FROM {}_Comments;".format(sid, sid))
+        cursors.append(cursor)
+    return cursors

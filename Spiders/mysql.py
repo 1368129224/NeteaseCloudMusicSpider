@@ -45,36 +45,40 @@ def get_songs(artist_info, api):
                 db.rollback()
             db.commit()
     except Exception as e:
-        print('get_songs' + e)
+        print(e)
         api.stopApi()
         api.startApi()
         return get_songs(artist_info, api)
+    finally:
+        db.close()
     return songs
 
-def request_comment(url, song_info, api):
+def request_comment(url, song_info, api, db):
     resp = requests.get(url=url)
     comments = []
     try:
         for item in resp.json()['comments']:
             comments.append(
-                {'sid':song_info['sid'],'commentId':item['commentId'], 'userId': item['user']['userId'], 'nickname': item['user']['nickname'], 'likedCount': item['likedCount'],
+                {'sid':song_info['sid'],'cid':item['commentId'], 'uid': item['user']['userId'], 'uname': item['user']['nickname'], 'likedCount': item['likedCount'],
                  'content': item['content']})
-        db_session = models.init_session()
+        cursor = db.cursor()
         for comment in comments:
             try:
-                db_session.add(models.Comments(sid=comment['sid'], cid=comment['commentId'], content=comment['content'], likedCount=comment['likedCount'], uid=comment['userId'], uname=comment['nickname']))
-                print('insert comment{}'.format(song_info['sid']))
-                db_session.commit()
-            except:
-                db_session.rollback()
-        db_session.close()
+                cursor.execute("INSERT INTO T_Comments VALUES ({}, {}, {}, {}, {}, '{}')".format( \
+                    comment['cid'],comment['sid'],comment['likedCount'],comment['uid'],comment['uname'],comment['content']))
+            except Exception as e:
+                print(e)
+                db.rollback()
+            db.commit()
     except Exception as e:
-        print('request_comment' + e)
+        print(e)
         api.stopApi()
         api.startApi()
-        request_comment(url, song_info, api)
+        request_comment(url, song_info, api, db)
+    finally:
+        db.close()
 
-def get_comments_multi_thread(song_info, api):
+def get_comments_multi_thread(song_info, api, db):
     url_get_comment = 'http://localhost:3000/comment/music?id={}&limit=100&offset={}'.format(song_info['sid'], 0)
     try:
         resp = requests.get(url=url_get_comment)
@@ -88,8 +92,11 @@ def get_comments_multi_thread(song_info, api):
     urls.extend(['http://localhost:3000/comment/music?id={}&limit=100&offset={}'.format(song_info['sid'], i) for i in range(total - 11000, total, 100)])
     song_infos = [song_info for i in range(0,len(urls))]
     apis = [api for i in range(0,len(urls))]
+    dbs = [db for i in range(0, len(urls))]
     with ThreadPoolExecutor(128) as executor:
-        executor.map(request_comment, urls, song_infos, apis)
+        executor.map(request_comment, urls, song_infos, apis, dbs)
 
-def get_fans_info():
+def get_fans_info(aid, db):
+    fans = models.select_fans_id(aid, db)
+
     pass
