@@ -1,5 +1,9 @@
 import requests
+import time
 from bs4 import BeautifulSoup
+from Spiders import mysql
+from Helper.ApiHelper import api
+from Helper import models
 
 
 def get_loccodes():
@@ -26,4 +30,22 @@ def get_loccodes():
     return locs
 
 if __name__ == '__main__':
-    print(get_loccodes())
+    # print(get_loccodes())
+
+    models.init_db()
+    Api = api()
+    Api.startApi()
+    name = input('请输入歌手名：').strip()
+    while name == '':
+        name = input('请输入歌手名：').strip()
+    start_time = time.time()
+    try:
+        artist_info = mysql.get_artist_id(name, Api)
+        print(artist_info)
+    #     songs = mysql.get_songs(artist_info, Api)
+    #     for song_info in songs:
+    #         mysql.get_comments_multi_thread(song_info, Api)
+    finally:
+        Api.stopApi()
+    # print(artist_info)
+    print(time.time() - start_time)

@@ -4,6 +4,7 @@ mysql.home
 api_key.txt
 .ipynb_checkpoints
 Deng.ttf
+SQLAlchemyMysql.tx
 
 
 # Byte-compiled / optimized / DLL files

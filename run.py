@@ -1,9 +1,10 @@
 import sys
-from Helper.ApiHelper import api
-from Helper.SqlHelper import getMongoTx
-from Spiders.search_artist import get_artist_id, get_songs, get_comments_multi_thread
 import pymongo
 import time
+from Helper.ApiHelper import api
+from Helper.SqlHelper import getMongoTx
+from Spiders.mongodb import get_artist_id, get_songs, get_comments_multi_thread
+
 
 start_time = time.time()
 client = pymongo.MongoClient(getMongoTx())

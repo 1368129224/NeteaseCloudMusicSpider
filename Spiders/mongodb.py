@@ -60,3 +60,4 @@ def get_comments_multi_thread(song_info, api, db):
     apis = [api for i in range(0, total + 100, 100)]
     with ThreadPoolExecutor(64) as executor:
         executor.map(request_comment, urls, song_infos, dbs, apis)
+
