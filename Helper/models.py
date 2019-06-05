@@ -52,8 +52,8 @@ def create_comments_table(sid, db):
                         sid INT    COMMENT 'sid 歌曲ID' , \
                         likedCount INT    COMMENT 'likedCount 点赞数' , \
                         uid INT    COMMENT 'uid 评论者ID' , \
-                        uname INT    COMMENT 'uname 评论者昵称' , \
-                        content VARCHAR(1024)    COMMENT 'content 评论内容' , \
+                        uname VARCHAR(128)    COMMENT 'uname 评论者昵称' , \
+                        content TEXT    COMMENT 'content 评论内容' , \
                         PRIMARY KEY (cid) \
                     ) COMMENT = '评论表 ';;".format(sid))
 

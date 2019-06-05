@@ -42,13 +42,19 @@ if __name__ == '__main__':
         name = input('请输入歌手名：').strip()
     start_time = time.time()
     try:
-        db = pymysql.connect(**getMySqlTx())
+        # db = pymysql.connect(**getMySqlTx())
         artist_info = mysql.get_artist_id(name, Api)
         print(artist_info)
         songs = mysql.get_songs(artist_info, Api)
         for song_info in songs:
-            mysql.get_comments_multi_thread(song_info, Api, db)
+            db = pymysql.connect(**getMySqlTx())
+            models.create_comments_table(song_info['sid'], db)
+            db.close()
+            mysql.get_comments_multi_thread(song_info, Api)
+    except Exception as e:
+        print('test' + e)
     finally:
         Api.stopApi()
+        # db.close()
     # print(artist_info)
     print(time.time() - start_time)
