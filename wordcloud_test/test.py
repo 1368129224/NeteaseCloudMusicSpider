@@ -44,6 +44,7 @@ def word_count(word_list):
     #     for i in word_counts_top100:
     #         f.write(str(i) + '\n')
 
+
 def generate_image(word_counts):
     mask = numpy.array(Image.open('picture.png'))
     w = wordcloud.WordCloud(

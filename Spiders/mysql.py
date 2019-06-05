@@ -88,8 +88,10 @@ def get_comments_multi_thread(song_info, api, db):
         api.startApi()
         resp = requests.get(url=url_get_comment)
         total = resp.json()['total']
-    urls = ['http://localhost:3000/comment/music?id={}&limit=100&offset={}'.format(song_info['sid'], i) for i in range(0, 11000, 100)]
-    urls.extend(['http://localhost:3000/comment/music?id={}&limit=100&offset={}'.format(song_info['sid'], i) for i in range(total - 11000, total, 100)])
+    urls = ['http://localhost:3000/comment/music?id={}&limit=100&offset={}'.format(
+        song_info['sid'], i) for i in range(0, 11000, 100)]
+    urls.extend(['http://localhost:3000/comment/music?id={}&limit=100&offset={}'.format(
+        song_info['sid'], i) for i in range(total - 11000, total, 100)])
     song_infos = [song_info for i in range(0,len(urls))]
     apis = [api for i in range(0,len(urls))]
     dbs = [db for i in range(0, len(urls))]
