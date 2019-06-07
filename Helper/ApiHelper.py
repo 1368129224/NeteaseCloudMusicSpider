@@ -9,8 +9,9 @@ catlist = {'流行':'LiuXing', '影视原声':'YingShiYuanYin', '华语':'HuaYu'
 class api():
     def __changeIP(self):
         try:
-            with open(r"G:\163music\util\request.js", "r+", encoding="utf8") as f:
-                f.seek(2779)
+            with open(r"D:\163music\util\request.js", "r+", encoding="utf8") as f:
+                f.seek(2807)
+				# ASUS 2807
                 random.seed(a=None)
                 ip = repr(random.randint(100, 255)) + '.' + \
                      repr(random.randint(100, 255))
@@ -24,7 +25,7 @@ class api():
         self.__changeIP()
         self.__api = subprocess.Popen(
             'node app.js',
-            cwd=r"G:\163music",
+            cwd=r"D:\163music",
             stdout=None,
             stderr=None
         )

@@ -57,19 +57,21 @@ def create_comments_table(sid, db):
                         PRIMARY KEY (cid) \
                     ) COMMENT = '评论表 ';;".format(sid))
 
-def select_fans_id(aid, db):
+def create_fans_table(aid, db):
     '''
-    从数据库中查询hotsong的评论者，返回包含50个评论者ID的SSCursor的list
+    创建歌手粉丝表
     :param aid: 歌手ID
-    :param db: 数据库链接
+    :param db: 数据库连接
     :return:
     '''
-    cursors = []
     cursor = db.cursor()
-    cursor.execute("SELECT T_HotSongs.id FROM T_HotSongs WHERE T_HotSongs.id = {} ORDER BY T_HotSongs.rating".format(aid))
-    sids = cursor.fetchall()
-    for sid in sids:
-        cursor = db.cursor(pymysql.cursors.SSCursor)
-        cursor.execute("SELECT DISTINCT {}_Comments.uid FROM {}_Comments;".format(sid, sid))
-        cursors.append(cursor)
-    return cursors
+    cursor.execute("CREATE TABLE {}_FansInfo( \
+                        id INT NOT NULL   COMMENT 'id 粉丝ID' , \
+                        nickname VARCHAR(128)    COMMENT 'nickname 昵称' , \
+                        level INT    COMMENT 'level 等级' , \
+                        city INT    COMMENT 'city 城市' , \
+                        followeds INT    COMMENT 'followeds 粉丝数' , \
+                        follows INT    COMMENT 'follows 关注数' , \
+                        playlists INT    COMMENT 'playlists 歌单数量' , \
+                        PRIMARY KEY (id) \
+                    ) COMMENT = '粉丝表 ';;".format(aid))

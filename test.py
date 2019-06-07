@@ -1,11 +1,6 @@
 import requests
-import time
-import pymysql
 from bs4 import BeautifulSoup
-from Spiders import mysql
-from Helper.ApiHelper import api
-from Helper.SqlHelper import getMySqlTx
-from Helper import models
+from wordcloud_test import mysql as wcmysql
 
 
 def get_loccodes():
@@ -33,28 +28,15 @@ def get_loccodes():
 
 if __name__ == '__main__':
     # print(get_loccodes())
+    ids = wcmysql.get_ids()
+    for sid in ids:
+        comments = wcmysql.get_comments(sid)
+        partition_result = wcmysql.partition(comments)
+        wordlist = wcmysql.word_count(partition_result)
+        draw_picture = wcmysql.draw_picture(wordlist, sid)
 
-    models.init_db()
-    Api = api()
-    Api.startApi()
-    name = input('请输入歌手名：').strip()
-    while name == '':
-        name = input('请输入歌手名：').strip()
-    start_time = time.time()
-    try:
-        # db = pymysql.connect(**getMySqlTx())
-        artist_info = mysql.get_artist_id(name, Api)
-        print(artist_info)
-        songs = mysql.get_songs(artist_info, Api)
-        for song_info in songs:
-            db = pymysql.connect(**getMySqlTx())
-            models.create_comments_table(song_info['sid'], db)
-            db.close()
-            mysql.get_comments_multi_thread(song_info, Api)
-    except Exception as e:
-        print('test' + e)
-    finally:
-        Api.stopApi()
-        # db.close()
-    # print(artist_info)
-    print(time.time() - start_time)
+    # 测试
+    # comments = wcmysql.get_comments(ids[0])
+    # partition_result = wcmysql.partition(comments)
+    # wordlist = wcmysql.word_count(partition_result)
+    # draw_picture = wcmysql.draw_picture(wordlist, ids[0])

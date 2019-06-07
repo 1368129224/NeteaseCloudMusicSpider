@@ -1,7 +1,7 @@
 import requests
 import pymysql
 from concurrent.futures import ThreadPoolExecutor
-from Helper import models
+from Helper import Database
 from Helper.SqlHelper import getMySqlTx
 
 
@@ -60,24 +60,35 @@ def request_comment(url, song_info, api):
     try:
         for item in resp.json()['comments']:
             comments.append(
-                [item['commentId'], song_info['sid'], item['likedCount'], item['user']['userId'], item['user']['nickname'],item['content']])
-        cursor = db.cursor()
-        sql = "INSERT INTO " + str(song_info['sid']) + "_Comments VALUES (%s, %s, %s, %s, %s, %s)"
-        for comment in comments:
-            try:
-                cursor.execute(sql, comment)
-                # format(song_info['sid'], comment['cid'],comment['sid'],comment['likedCount'],comment['uid'],comment['uname'],comment['content']))
-            except Exception as e:
-                print('INSERT INTO Comments' + str(e))
-                db.rollback()
-            db.commit()
+                [item['commentId'],
+                song_info['sid'],
+                item['likedCount'],
+                item['user']['userId'],
+                item['user']['nickname'],
+                item['content']]
+            )
     except Exception as e:
         print(e)
         api.stopApi()
         api.startApi()
-    finally:
-        db.close()
         request_comment(url, song_info, api)
+    cursor = db.cursor()
+    sql_comments = "INSERT INTO " + str(song_info['sid']) + "_Comments VALUES (%s, %s, %s, %s, %s, %s)"
+    for comment in comments:
+        try:
+            cursor.execute(sql_comments, comment)
+            # format(song_info['sid'], comment['cid'],comment['sid'],comment['likedCount'],comment['uid'],comment['uname'],comment['content']))
+        except Exception as e:
+            print('INSERT INTO Comments' + str(e))
+            db.rollback()
+        db.commit()
+        try:
+            cursor.execute("INSERT INTO `163music_new`.`"+ str(song_info['aid']) +"_FansInfo`(`id`, `nickname`, `level`, `city`, `followeds`, `follows`, `playlists`) " \
+                "VALUES ({}, NULL, NULL, NULL, NULL, NULL, NULL);".format(comment[3]))
+        except Exception as e:
+            pass
+        db.commit()
+    db.close()
 
 def get_comments_multi_thread(song_info, api):
     url_get_comment = 'http://localhost:3000/comment/music?id={}&limit=100&offset={}'.format(song_info['sid'], 0)
@@ -93,14 +104,10 @@ def get_comments_multi_thread(song_info, api):
         song_info['sid'], i) for i in range(0, 5500, 100)]
     urls.extend(['http://localhost:3000/comment/music?id={}&limit=100&offset={}'.format(
         song_info['sid'], i) for i in range(total - 5500, total, 100)])
-    print(len(urls))
+    # for url in urls:
+    #     print(url)
     song_infos = [song_info for i in range(0,len(urls))]
     apis = [api for i in range(0,len(urls))]
     # dbs = [db for i in range(0, len(urls))]
-    with ThreadPoolExecutor(150) as executor:
+    with ThreadPoolExecutor(128) as executor:
         executor.map(request_comment, urls, song_infos, apis)
-
-def get_fans_info(aid, db):
-    fans = models.select_fans_id(aid, db)
-
-    pass

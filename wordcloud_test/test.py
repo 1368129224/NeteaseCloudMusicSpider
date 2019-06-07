@@ -17,6 +17,7 @@ def save_comments():
     with open('comments.txt', 'w', encoding='utf-8') as f:
         for item in result:
             f.write(item['content'].replace('\n', '') + '\n')
+
 def partition():
     result = []
     pattern = re.compile(u'\t|\n|\.|-|:|;|\)|\(|\?|"|。|，|？|！|“|”|\[|\]|—|《|》| |~|]|（|）|…|、|\+|：')
@@ -59,4 +60,4 @@ def generate_image(word_counts):
     w.to_file('test.png')
 
 if __name__ == '__main__':
-    generate_image(word_count(partition()))
+    print(type(word_count(partition())))
