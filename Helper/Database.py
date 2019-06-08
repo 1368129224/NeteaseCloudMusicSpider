@@ -68,6 +68,7 @@ def create_fans_table(aid, db):
     cursor.execute("CREATE TABLE {}_FansInfo( \
                         id INT NOT NULL   COMMENT 'id 粉丝ID' , \
                         nickname VARCHAR(128)    COMMENT 'nickname 昵称' , \
+                        gender VARCHAR(1)    COMMENT 'gender 性别' , \
                         level INT    COMMENT 'level 等级' , \
                         city INT    COMMENT 'city 城市' , \
                         followeds INT    COMMENT 'followeds 粉丝数' , \

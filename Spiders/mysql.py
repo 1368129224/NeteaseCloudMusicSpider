@@ -60,12 +60,14 @@ def request_comment(url, song_info, api):
     try:
         for item in resp.json()['comments']:
             comments.append(
-                [item['commentId'],
-                song_info['sid'],
-                item['likedCount'],
-                item['user']['userId'],
-                item['user']['nickname'],
-                item['content']]
+                [
+                    item['commentId'],
+                    song_info['sid'],
+                    item['likedCount'],
+                    item['user']['userId'],
+                    item['user']['nickname'],
+                    item['content']
+                ]
             )
     except Exception as e:
         print(e)
@@ -109,5 +111,53 @@ def get_comments_multi_thread(song_info, api):
     song_infos = [song_info for i in range(0,len(urls))]
     apis = [api for i in range(0,len(urls))]
     # dbs = [db for i in range(0, len(urls))]
-    with ThreadPoolExecutor(128) as executor:
+    with ThreadPoolExecutor(192) as executor:
         executor.map(request_comment, urls, song_infos, apis)
+
+def get_fans_infos_multi_thread(aid, api):
+    db = pymysql.connect(**getMySqlTx())
+    cursor = db.cursor(pymysql.cursors.SSCursor)
+    cursor.execute("SELECT id FROM {}_FansInfo WHERE city IS NULL".format(aid))
+    with ThreadPoolExecutor(192) as executor:
+        for i in cursor:
+            executor.submit(request_info, aid, i[0], api)
+        # for i in cursor:
+        #     request_info(aid, i[0], api)
+    db.close()
+
+def request_info(aid, uid, api):
+    url_get_info = 'http://localhost:3000/user/detail?uid=' + str(uid)
+    db = pymysql.connect(**getMySqlTx())
+    cursor = db.cursor()
+    resp = requests.get(url_get_info)
+    if resp.status_code == 404:
+        cursor.execute("DELETE FROM `{}_FansInfo` WHERE id = {}".format(aid, uid))
+        db.close()
+        return
+    total = resp.json()
+    info = {}
+    try:
+        info['nickname'] = total['profile']['nickname']
+        info['gender'] = total['profile']['gender']
+        info['level'] = total['level']
+        info['city'] = total['profile']['city']
+        info['followeds'] = total['profile']['followeds']
+        info['follows'] = total['profile']['follows']
+        info['playlist'] = total['profile']['playlistCount']
+        try:
+            cursor.execute(
+                "UPDATE `163music_new`.`{}_FansInfo` SET `nickname` = '{}', `gender` = '{}', `level` = {}, `city` = {}, `followeds` = {}, `follows` = {}, `playlists` = {} WHERE `id` = {};".format(
+                    aid, info['nickname'], info['gender'], info['level'], info['city'], info['followeds'], info['follows'], info['playlist'], uid
+                )
+            )
+        except Exception as e:
+            print('update error:' + str(e))
+        db.commit()
+    except Exception as e:
+        print("request_info" + str(e))
+        api.stopApi()
+        api.startApi()
+        db.close()
+        request_info(aid, uid, api)
+    finally:
+        db.close()

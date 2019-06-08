@@ -253,16 +253,16 @@
               "notNull": true
             },
             {
-              "name": "aid",
-              "type": "Integer",
-              "remark": "歌手ID",
-              "chnname": "aid"
-            },
-            {
               "name": "nickname",
               "type": "Name",
               "remark": "昵称",
               "chnname": "nickname"
+            },
+            {
+              "name": "gender",
+              "type": "YesNo",
+              "remark": "性别",
+              "chnname": "gender"
             },
             {
               "name": "level",
@@ -418,25 +418,6 @@
             ],
             "sourceAnchor": 2,
             "targetAnchor": 1
-          },
-          {
-            "shape": "erdRelation",
-            "relation": "0,n:1",
-            "source": "be748acf",
-            "target": "904bb5a0",
-            "id": "758cfd31",
-            "controlPoints": [
-              {
-                "x": 318.369140625,
-                "y": 172.30263157894737
-              },
-              {
-                "x": 409.6337890625,
-                "y": 212.53571428571428
-              }
-            ],
-            "sourceAnchor": 3,
-            "targetAnchor": 0
           }
         ]
       },
@@ -467,7 +448,7 @@
           "relation": "0,n:1",
           "from": {
             "entity": "T_FansInfo",
-            "field": "aid"
+            "field": "nickname"
           },
           "to": {
             "entity": "T_Artists",
