@@ -26,17 +26,6 @@ def init_db():
                         aid INT    COMMENT 'artist_id 歌手ID' , \
                         PRIMARY KEY (id) \
                     ) COMMENT = '热门歌曲表 ';;")
-    cursor.execute("CREATE TABLE T_FansInfo( \
-                        id INT NOT NULL   COMMENT 'id 粉丝ID' , \
-                        aid INT    COMMENT 'aid 歌手ID' , \
-                        nickname VARCHAR(128)    COMMENT 'nickname 昵称' , \
-                        level INT    COMMENT 'level 等级' , \
-                        city INT    COMMENT 'city 城市' , \
-                        followeds INT    COMMENT 'followeds 粉丝数' , \
-                        follows INT    COMMENT 'follows 关注数' , \
-                        playlists INT    COMMENT 'playlists 歌单数量' , \
-                        PRIMARY KEY (id) \
-                    ) COMMENT = '粉丝表 ';;")
     db.close()
 
 def create_comments_table(sid, db):

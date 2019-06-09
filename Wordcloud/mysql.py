@@ -176,10 +176,9 @@ def getlnglat(citys):
     return temp
 
 
-# 生成热力图
 def generate_map(aid, loc_counts):
     '''
-    读取模板,生成热力图html
+    读取模板,生成热力图静态网页
     :param aid: 歌手ID
     :param loc_counts: 经纬分布统计,即getlnglat返回的[{'lat':60,'lng':90,'count'666},...]
     :return: None
