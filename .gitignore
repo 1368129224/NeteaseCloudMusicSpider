@@ -1,5 +1,6 @@
 .idea/ 
 mongodb.tx
+mongodb.tx
 mysql.tx
 mysql.home
 api_key.txt
