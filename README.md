@@ -105,15 +105,27 @@
 
 ![数据库](<https://raw.githubusercontent.com/1368129224/NeteaseCloudMusicSpider/master/Pictures/163music_new.jpg>)
 
+<center>50张评论表、歌手粉丝表、歌手表、热门歌曲表。</center>
+
 ![167705的评论](https://raw.githubusercontent.com/1368129224/NeteaseCloudMusicSpider/master/Pictures/167705_Comments.jpg)
+
+<center>由于网易云音乐官方API限制，每首歌只能获取最新和最旧各5100条评论，每首歌大约10k条评论。</center>
 
 ![5771的粉丝信息](https://raw.githubusercontent.com/1368129224/NeteaseCloudMusicSpider/master/Pictures/5771_FansInfo.jpg)
 
+<center>歌手粉丝表</center>
+
 ![5771的热门歌曲](https://raw.githubusercontent.com/1368129224/NeteaseCloudMusicSpider/master/Pictures/T_HotSongs.jpg)
+
+<center>热门歌曲表</center>
 
 ![幻听词云](https://raw.githubusercontent.com/1368129224/NeteaseCloudMusicSpider/master/Wordcloud_pictures/167655.png)
 
-[5771的粉丝分布热力图.html](https://github.com/1368129224/NeteaseCloudMusicSpider/blob/master/Wordcloud_pictures/Heat_map/5771.html)
+<center>幻听 词云</center>
+
+![粉丝分布热力图](https://raw.githubusercontent.com/1368129224/NeteaseCloudMusicSpider/master/Pictures/5771_HeatMap.jpg)
+
+<center><a href="https://github.com/1368129224/NeteaseCloudMusicSpider/blob/master/Wordcloud_pictures/Heat_map/5771.html">粉丝分布热力图</a></center>
 
 ---
 
