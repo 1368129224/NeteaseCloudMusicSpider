@@ -103,7 +103,17 @@
 
 ## 爬取成果
 
+![数据库](<https://raw.githubusercontent.com/1368129224/NeteaseCloudMusicSpider/master/Pictures/163music_new.jpg>)
 
+![167705的评论](https://raw.githubusercontent.com/1368129224/NeteaseCloudMusicSpider/master/Pictures/167705_Comments.jpg)
+
+![5771的粉丝信息](https://raw.githubusercontent.com/1368129224/NeteaseCloudMusicSpider/master/Pictures/5771_FansInfo.jpg)
+
+![5771的热门歌曲](https://raw.githubusercontent.com/1368129224/NeteaseCloudMusicSpider/master/Pictures/T_HotSongs.jpg)
+
+![幻听词云](https://raw.githubusercontent.com/1368129224/NeteaseCloudMusicSpider/master/Wordcloud_pictures/167655.png)
+
+[5771的粉丝分布热力图.html](https://github.com/1368129224/NeteaseCloudMusicSpider/blob/master/Wordcloud_pictures/Heat_map/5771.html)
 
 ---
 
