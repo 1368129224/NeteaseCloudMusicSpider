@@ -1,11 +1,16 @@
 import requests
 import pymysql
 from concurrent.futures import ThreadPoolExecutor
-from Helper import Database
 from Helper.SqlHelper import getMySqlTx
 
 
 def get_artist_id(name, api):
+    '''
+    搜索歌手
+    :param name: 歌手名
+    :param api: api
+    :return: 元组:(歌手ID,歌手名)
+    '''
     url_search_artist = 'http://localhost:3000/search?type=100&keywords={}'.format(name)
     resp = requests.get(url = url_search_artist)
     try:
@@ -28,6 +33,12 @@ def get_artist_id(name, api):
     return (artist['id'], artist['name'])
 
 def get_songs(artist_info, api):
+    '''
+    获取歌手的前50首热门歌曲
+    :param artist_info: 歌手信息,即get_artist_id返回的元组:(歌手ID,歌手名)
+    :param api: api
+    :return: 列表:[{'rating':歌曲热门度, 'aid':歌手ID, 'sid':歌曲ID, 'sname':歌曲名},...]
+    '''
     url_get_artist_songs = 'http://localhost:3000/artists?id={}'.format(artist_info[0])
     resp = requests.get(url = url_get_artist_songs)
     songs = []
@@ -54,6 +65,13 @@ def get_songs(artist_info, api):
     return songs
 
 def request_comment(url, song_info, api):
+    '''
+    获取歌曲评论
+    :param url: 需要爬取的url
+    :param song_info: 歌曲信息即,get_songs返回的列表的item:{'rating':歌曲热门度, 'aid':歌手ID, 'sid':歌曲ID, 'sname':歌曲名}
+    :param api: api
+    :return: None
+    '''
     db = pymysql.connect(**getMySqlTx())
     resp = requests.get(url=url)
     comments = []
@@ -93,6 +111,12 @@ def request_comment(url, song_info, api):
     db.close()
 
 def get_comments_multi_thread(song_info, api):
+    '''
+    多线程爬取评论入口
+    :param song_info: 歌曲信息即,get_songs返回的列表的item:{'rating':歌曲热门度, 'aid':歌手ID, 'sid':歌曲ID, 'sname':歌曲名}
+    :param api: api
+    :return: None
+    '''
     url_get_comment = 'http://localhost:3000/comment/music?id={}&limit=100&offset={}'.format(song_info['sid'], 0)
     try:
         resp = requests.get(url=url_get_comment)
@@ -106,26 +130,34 @@ def get_comments_multi_thread(song_info, api):
         song_info['sid'], i) for i in range(0, 5500, 100)]
     urls.extend(['http://localhost:3000/comment/music?id={}&limit=100&offset={}'.format(
         song_info['sid'], i) for i in range(total - 5500, total, 100)])
-    # for url in urls:
-    #     print(url)
     song_infos = [song_info for i in range(0,len(urls))]
     apis = [api for i in range(0,len(urls))]
-    # dbs = [db for i in range(0, len(urls))]
     with ThreadPoolExecutor(192) as executor:
         executor.map(request_comment, urls, song_infos, apis)
 
 def get_fans_infos_multi_thread(aid, api):
+    '''
+    多线程爬取粉丝信息入口
+    :param aid: 歌手ID
+    :param api: api
+    :return: None
+    '''
     db = pymysql.connect(**getMySqlTx())
     cursor = db.cursor(pymysql.cursors.SSCursor)
     cursor.execute("SELECT id FROM {}_FansInfo WHERE city IS NULL".format(aid))
     with ThreadPoolExecutor(192) as executor:
         for i in cursor:
             executor.submit(request_info, aid, i[0], api)
-        # for i in cursor:
-        #     request_info(aid, i[0], api)
     db.close()
 
 def request_info(aid, uid, api):
+    '''
+    爬取粉丝信息
+    :param aid: 歌手ID
+    :param uid: 粉丝ID
+    :param api: api
+    :return: None
+    '''
     url_get_info = 'http://localhost:3000/user/detail?uid=' + str(uid)
     db = pymysql.connect(**getMySqlTx())
     cursor = db.cursor()

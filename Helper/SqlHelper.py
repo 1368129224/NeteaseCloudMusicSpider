@@ -1,6 +1,10 @@
+import os
+from Helper import BASE_PATH
+
+
 def getMySqlHome():
     sql = {}
-    with open('mysql.home', 'r') as f:
+    with open(os.path.join(BASE_PATH, 'Helper\mysql.home'), 'r') as f:
         lines = f.readlines()
         for line in lines:
             sql[line.split('=')[0]] = line.split('=')[1].replace('\n','')
@@ -10,7 +14,7 @@ def getMySqlHome():
 
 def getMySqlTx():
     sql = {}
-    with open('mysql.tx', 'r') as f:
+    with open(os.path.join(BASE_PATH, 'Helper\mysql.tx'), 'r') as f:
         lines = f.readlines()
         for line in lines:
             sql[line.split('=')[0]] = line.split('=')[1].replace('\n','')
@@ -19,7 +23,7 @@ def getMySqlTx():
     return sql
 
 def getMongoTx():
-    with open('mongodb.tx', 'r') as f:
+    with open(os.path.join(BASE_PATH, 'Helper\mongodb.tx'), 'r') as f:
         return f.readline()
 
 if __name__ == '__main__':

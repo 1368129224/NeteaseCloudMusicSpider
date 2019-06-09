@@ -1,22 +1,24 @@
 import requests
 import time
 from bs4 import BeautifulSoup
-from wordcloud_test import mysql as wcmysql
+from Wordcloud import mysql as wcmysql
 from Spiders import mysql
 from Helper.ApiHelper import api
+from Helper.SqlHelper import getMySqlTx
 
 
 if __name__ == '__main__':
     # print(get_loccodes())
 
     # 歌曲评论词云生成
-    # ids = wcmysql.get_ids()
+    # ids = wcmysql.get_ids(5771)
     # for sid in ids:
     #     comments = wcmysql.get_comments(sid)
     #     partition_result = wcmysql.partition(comments)
     #     wordlist = wcmysql.word_count(partition_result)
     #     draw_picture = wcmysql.draw_picture(wordlist, sid)
 
+    # 生成热力图
     # wcmysql.request_loccodes()
     # citys = wcmysql.get_city()
     # points = wcmysql.getlnglat(citys)
@@ -29,3 +31,5 @@ if __name__ == '__main__':
     # partition_result = wcmysql.partition(comments)
     # wordlist = wcmysql.word_count(partition_result)
     # draw_picture = wcmysql.draw_picture(wordlist, ids[0])
+
+    pass

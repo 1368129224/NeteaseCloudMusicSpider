@@ -5,7 +5,7 @@ from Helper.SqlHelper import getMySqlTx
 def init_db():
     '''
     初始化数据库
-    :return:
+    :return: None
     '''
     db = pymysql.connect(**getMySqlTx())
     cursor = db.cursor()
@@ -44,7 +44,7 @@ def create_comments_table(sid, db):
     创建歌曲评论表
     :param sid: 歌曲ID
     :param db: 数据库链接
-    :return:
+    :return: None
     '''
     cursor = db.cursor()
     cursor.execute("CREATE TABLE {}_Comments( \
@@ -62,7 +62,7 @@ def create_fans_table(aid, db):
     创建歌手粉丝表
     :param aid: 歌手ID
     :param db: 数据库连接
-    :return:
+    :return: None
     '''
     cursor = db.cursor()
     cursor.execute("CREATE TABLE {}_FansInfo( \
