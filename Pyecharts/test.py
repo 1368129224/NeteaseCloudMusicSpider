@@ -48,7 +48,7 @@ ee = (
         .add_xaxis([str(i) for i in range(1, 11)])
         .add_yaxis("男性", [2331948,436372,328108,254534,146967,78094,76079,67013,65588,63676])
         .add_yaxis("女性", [273930,207547,138289,132198,88809,47306,39272,36877,35043,34579])
-        .set_global_opts(title_opts=opts.TitleOpts(title="男女粉丝的粉丝数TOP10"))
+        .set_global_opts(title_opts=opts.TitleOpts(title="男女粉丝的粉丝数TOP20"))
 )
 
 e = (
@@ -65,3 +65,4 @@ e = (
 
 pemysql.gender(5771)
 pemysql.level(5771)
+pemysql.top20_fans(5771)
