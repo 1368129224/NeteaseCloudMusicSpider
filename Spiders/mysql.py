@@ -145,7 +145,7 @@ def get_fans_infos_multi_thread(aid, api):
     db = pymysql.connect(**getMySqlTx())
     cursor = db.cursor(pymysql.cursors.SSCursor)
     cursor.execute("SELECT id FROM {}_FansInfo WHERE city IS NULL".format(aid))
-    with ThreadPoolExecutor(192) as executor:
+    with ThreadPoolExecutor(64) as executor:
         for i in cursor:
             executor.submit(request_info, aid, i[0], api)
     db.close()
@@ -162,8 +162,9 @@ def request_info(aid, uid, api):
     db = pymysql.connect(**getMySqlTx())
     cursor = db.cursor()
     resp = requests.get(url_get_info)
-    if resp.status_code == 404:
+    if resp.json()['code'] == 404:
         cursor.execute("DELETE FROM `{}_FansInfo` WHERE id = {}".format(aid, uid))
+        db.commit()
         db.close()
         return
     total = resp.json()

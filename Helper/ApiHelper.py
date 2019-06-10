@@ -12,7 +12,7 @@ class api():
         :return:
         '''
         try:
-            with open(r"D:\163music\util\request.js", "r+", encoding="utf8") as f:
+            with open(r"G:\163music\util\request.js", "r+", encoding="utf8") as f:
                 f.seek(2807)
 				# ASUS 2807
                 # HASEE 2779
@@ -29,7 +29,7 @@ class api():
         self.__changeIP()
         self.__api = subprocess.Popen(
             'node app.js',
-            cwd=r"D:\163music",
+            cwd=r"G:\163music",
             stdout=None,
             stderr=None
         )
