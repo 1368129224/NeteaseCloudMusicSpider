@@ -195,6 +195,7 @@ def generate_map(aid, loc_counts):
                 result.write(source[i])
 
 if __name__ == '__main__':
-    ids = get_ids(5771)
-    print(type(ids))
-    print(ids)
+    comments = get_comments(411214279)
+    temp = dict(word_count(partition(comments)))
+    for i in temp:
+        print(i, temp[i])

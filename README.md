@@ -4,11 +4,13 @@
 
 网易云音乐爬虫
 
-由于时间和技术问题，项目采用了第三方项目作为数据源，此项目对网易云音乐官方API进行了再一次封装，方便使用。
+使用[NeteaseCloudMusicApi](https://github.com/Binaryify/NeteaseCloudMusicApi)+requests原生爬虫，数据存入MySql，并进行简单的数据分析及可视化。
 
-感谢[NeteaseCloudMusicApi](https://github.com/Binaryify/NeteaseCloudMusicApi)项目及项目的贡献者。
 
-使用[NeteaseCloudMusicApi](https://github.com/Binaryify/NeteaseCloudMusicApi)+requests原生爬虫，数据存入mysql。
+
+网易云音乐网页端是动态网页需要使用Selenium/PhantomJS进行爬取。由于时间和技术问题，项目直接从API爬取数据。采用第三方API服务，它对官方API进行了整理及封装，方便使用，[API文档](https://binaryify.github.io/NeteaseCloudMusicApi)。
+
+感谢[NeteaseCloudMusicApi](https://github.com/Binaryify/NeteaseCloudMusicApi)项目及项目贡献者。
 
 ---
 
@@ -126,25 +128,4 @@
 ![粉丝分布热力图](https://raw.githubusercontent.com/1368129224/NeteaseCloudMusicSpider/master/Pictures/5771_HeatMap.jpg)
 
 <center><a href="https://github.com/1368129224/NeteaseCloudMusicSpider/blob/master/Wordcloud_pictures/Heat_map/5771.html">粉丝分布热力图</a></center>
-
----
-
-## 以下早期代码
-
-### ~~爬取分类下的热门歌单，获取热门歌单内的歌曲，统计歌曲出现次数~~
-
-* ~~[Document](https://github.com/1368129224/NeteaseCloudMusicSpider/tree/master/Document)存放一些文档~~
-
-* ~~[Helper](https://github.com/1368129224/NeteaseCloudMusicSpider/tree/master/Helper)包括数据库链接字符串和[NeteaseCloudMusicApi](https://github.com/Binaryify/NeteaseCloudMusicApi)控制类~~
-
-* ~~[getPlaylistInfo](https://github.com/1368129224/NeteaseCloudMusicSpider/tree/master/getPlaylistInfo)爬取热门歌单及歌单信息~~
-
-* ~~[getPlaylistSongs](https://github.com/1368129224/NeteaseCloudMusicSpider/tree/master/getPlaylistSongs)爬取歌单内的所有歌曲ID~~
-
-* ~~[getSongName](https://github.com/1368129224/NeteaseCloudMusicSpider/tree/master/getSongName)按歌曲ID爬取歌曲名~~
-  ~~数据库结构：~~
-
-  ![数据库结构](<https://raw.githubusercontent.com/1368129224/NeteaseCloudMusicSpider/master/Pictures/20190414103943.jpg>)
-
-
 

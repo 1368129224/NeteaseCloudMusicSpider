@@ -14,8 +14,6 @@ class api():
         try:
             with open(r"G:\163music\util\request.js", "r+", encoding="utf8") as f:
                 f.seek(2807)
-				# ASUS 2807
-                # HASEE 2779
                 random.seed(a=None)
                 ip = repr(random.randint(100, 255)) + '.' + \
                      repr(random.randint(100, 255))

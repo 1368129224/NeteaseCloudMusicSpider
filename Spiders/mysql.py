@@ -50,7 +50,9 @@ def get_songs(artist_info, api):
         cursor = db.cursor()
         for song in songs:
             try:
-                cursor.execute("INSERT INTO T_HotSongs VALUES ({}, {}, '{}', {})".format(song['sid'], song['rating'], song['sname'], song['aid']))
+                cursor.execute("INSERT INTO T_HotSongs VALUES ({}, {}, '{}', {})".format(
+                    song['sid'], song['rating'], song['sname'], song['aid'])
+                )
             except Exception as e:
                 print('INSERT INTO T_HotSongs' + str(e))
                 db.rollback()
@@ -97,13 +99,13 @@ def request_comment(url, song_info, api):
     for comment in comments:
         try:
             cursor.execute(sql_comments, comment)
-            # format(song_info['sid'], comment['cid'],comment['sid'],comment['likedCount'],comment['uid'],comment['uname'],comment['content']))
         except Exception as e:
             print('INSERT INTO Comments' + str(e))
             db.rollback()
         db.commit()
         try:
-            cursor.execute("INSERT INTO `163music_new`.`"+ str(song_info['aid']) +"_FansInfo`(`id`, `nickname`, `level`, `city`, `followeds`, `follows`, `playlists`) " \
+            cursor.execute("INSERT INTO `163music_new`.`"+ str(song_info['aid'])
+                           + "_FansInfo`(`id`, `nickname`, `level`, `city`, `followeds`, `follows`, `playlists`) " \
                 "VALUES ({}, NULL, NULL, NULL, NULL, NULL, NULL);".format(comment[3]))
         except Exception as e:
             pass
@@ -180,7 +182,15 @@ def request_info(aid, uid, api):
         try:
             cursor.execute(
                 "UPDATE `163music_new`.`{}_FansInfo` SET `nickname` = '{}', `gender` = '{}', `level` = {}, `city` = {}, `followeds` = {}, `follows` = {}, `playlists` = {} WHERE `id` = {};".format(
-                    aid, info['nickname'], info['gender'], info['level'], info['city'], info['followeds'], info['follows'], info['playlist'], uid
+                    aid,
+                    info['nickname'],
+                    info['gender'],
+                    info['level'],
+                    info['city'],
+                    info['followeds'],
+                    info['follows'],
+                    info['playlist'],
+                    uid,
                 )
             )
         except Exception as e:

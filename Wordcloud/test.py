@@ -60,4 +60,4 @@ def generate_image(word_counts):
     w.to_file('test.png')
 
 if __name__ == '__main__':
-    print(type(word_count(partition())))
+    print(word_count(partition()))
