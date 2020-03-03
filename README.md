@@ -4,6 +4,10 @@
 
 网易云音乐爬虫
 
+**初学Python时期的代码，逻辑流程语法皆有不足，请谅解。**
+**初学Python时期的代码，逻辑流程语法皆有不足，请谅解。**
+**初学Python时期的代码，逻辑流程语法皆有不足，请谅解。**
+
 使用[NeteaseCloudMusicApi](https://github.com/Binaryify/NeteaseCloudMusicApi)+requests原生爬虫，数据存入MySql，并进行简单的数据分析及可视化。
 
 
