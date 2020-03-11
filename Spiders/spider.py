@@ -1,7 +1,6 @@
 import requests
-import pymysql
 from concurrent.futures import ThreadPoolExecutor
-from Helper.SqlHelper import getMySqlTx
+from utils import db
 
 
 def get_artist_id(name, api):

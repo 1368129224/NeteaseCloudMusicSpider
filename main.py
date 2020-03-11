@@ -2,7 +2,7 @@ import requests
 import time
 import pymysql
 from bs4 import BeautifulSoup
-from Spiders import mysql as spmysql
+from Spiders import spider as spmysql
 from Wordcloud import mysql as wcmysql
 from Helper.ApiHelper import api
 from Helper.SqlHelper import getMySqlTx
