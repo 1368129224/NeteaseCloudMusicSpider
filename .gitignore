@@ -1,12 +1,5 @@
 .idea/ 
-mongodb.tx
-mongodb.tx
-mysql.tx
-mysql.home
-api_key.txt
-.ipynb_checkpoints
-Deng.ttf
-SQLAlchemyMysql.tx
+config.py
 
 
 # Byte-compiled / optimized / DLL files

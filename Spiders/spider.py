@@ -14,7 +14,7 @@ def get_artist_id(name, api):
     url_search_artist = 'http://localhost:3000/search?type=100&keywords={}'.format(name)
     resp = requests.get(url = url_search_artist)
     try:
-        db = pymysql.connect(**getMySqlTx())
+        db = pymysql.connect(getMySqlTx())
         cursor = db.cursor()
         artist = resp.json()['result']['artists'][0]
         try:
@@ -46,7 +46,7 @@ def get_songs(artist_info, api):
         for index, item in enumerate(resp.json()['hotSongs']):
             songs.append({'rating':index + 1, 'aid':artist_info[0], 'sid':item['id'], 'sname':item['name']})
             # songs.append(models.HotSongs(id = item['id'], rating = index + 1, name = item['name'], artist_id = artist_info[0]))
-        db = pymysql.connect(**getMySqlTx())
+        db = pymysql.connect(getMySqlTx())
         cursor = db.cursor()
         for song in songs:
             try:
@@ -74,7 +74,7 @@ def request_comment(url, song_info, api):
     :param api: api
     :return: None
     '''
-    db = pymysql.connect(**getMySqlTx())
+    db = pymysql.connect(getMySqlTx())
     resp = requests.get(url=url)
     comments = []
     try:
@@ -144,7 +144,7 @@ def get_fans_infos_multi_thread(aid, api):
     :param api: api
     :return: None
     '''
-    db = pymysql.connect(**getMySqlTx())
+    db = pymysql.connect(getMySqlTx())
     cursor = db.cursor(pymysql.cursors.SSCursor)
     cursor.execute("SELECT id FROM {}_FansInfo WHERE city IS NULL".format(aid))
     with ThreadPoolExecutor(64) as executor:
@@ -161,7 +161,7 @@ def request_info(aid, uid, api):
     :return: None
     '''
     url_get_info = 'http://localhost:3000/user/detail?uid=' + str(uid)
-    db = pymysql.connect(**getMySqlTx())
+    db = pymysql.connect(getMySqlTx())
     cursor = db.cursor()
     resp = requests.get(url_get_info)
     if resp.json()['code'] == 404:
